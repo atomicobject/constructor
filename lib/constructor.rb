@@ -1,6 +1,6 @@
 CONSTRUCTOR_VERSION = '1.0.0'
 
-class Class
+class Class #:nodoc:#
   def constructor(*attrs)
     # Look for embedded options in the listing:
     opts = attrs.find { |a| a.kind_of?(Hash) and attrs.delete(a) } 
@@ -81,11 +81,11 @@ class Class
   end
 
   # Access the constructor keys for this class
-  def constructor_keys; @_ctor_keys; end
+  def constructor_keys; @_ctor_keys ||=[]; end
 end
 
 # Fancy validation exception, based on missing and extraneous keys.
-class ConstructorArgumentError < RuntimeError
+class ConstructorArgumentError < RuntimeError #:nodoc:#
   def initialize(missing,rejected=[])
     err_msg = ''
     if missing.size > 0
