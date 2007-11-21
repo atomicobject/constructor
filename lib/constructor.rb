@@ -1,4 +1,4 @@
-CONSTRUCTOR_VERSION = '1.0.0'
+CONSTRUCTOR_VERSION = '1.0.0' #:nodoc:#
 
 class Class #:nodoc:#
   def constructor(*attrs)
