@@ -21,3 +21,12 @@ Spec::Rake::SpecTask.new(:spec) do |t|
   t.spec_files = FileList['specs/*_spec.rb']
   t.spec_opts << '-c -f s'
 end
+
+load "../tools/tasks/homepage.rake"
+
+load "../tools/tasks/release_tagging.rake"
+ReleaseTagging.new do |t|
+  t.package = "constructor"
+  t.version = CONSTRUCTOR_VERSION
+end
+
