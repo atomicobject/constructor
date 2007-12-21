@@ -1,7 +1,12 @@
 CONSTRUCTOR_VERSION = '1.0.0' #:nodoc:#
 
 class Class #:nodoc:#
-  def constructor(*attrs)
+  def constructor(*attrs, &block)
+    call_block = ''
+    if block_given?
+      @constructor_block = block
+      call_block = 'self.instance_eval(&self.class.constructor_block)'
+    end
     # Look for embedded options in the listing:
     opts = attrs.find { |a| a.kind_of?(Hash) and attrs.delete(a) } 
     do_acc = opts.nil? ? false : opts[:accessors] == true
@@ -73,6 +78,7 @@ class Class #:nodoc:#
         #{validation_code}
         #{assigns}
         setup if respond_to?(:setup)
+        #{call_block}
       end
     }
 
@@ -82,6 +88,11 @@ class Class #:nodoc:#
 
   # Access the constructor keys for this class
   def constructor_keys; @_ctor_keys ||=[]; end
+
+  def constructor_block #:nodoc:#
+    @constructor_block
+  end
+
 end
 
 # Fancy validation exception, based on missing and extraneous keys.

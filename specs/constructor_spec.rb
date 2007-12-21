@@ -118,6 +118,12 @@ class Llamma
   end
 end
   
+class TestingBlockYield
+  constructor :a, :accessors => true do
+    @a = true
+  end
+end
+
 describe 'standard constructor usage' do
   it 'allows for object construction using a hash of named arguments' do
     fuh = TestingClass.new( 
@@ -317,5 +323,11 @@ describe 'catching ConstructorArgumentError' do
     rescue => bad_news
       bad_news.should be_kind_of(ConstructorArgumentError)
     end
+  end
+end
+
+describe 'block yielding' do
+  it 'executes a specified block after instantiating' do
+    TestingBlockYield.new(:a => false).a.should == true
   end
 end
