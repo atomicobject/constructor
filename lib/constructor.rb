@@ -15,6 +15,8 @@ class Class #:nodoc:#
 
     # Incorporate superclass's constructor keys, if our superclass
     if superclass.constructor_keys
+      similar_keys = superclass.constructor_keys & attrs
+      raise "Base class already has keys #{similar_keys.inspect}" unless similar_keys.empty?
       attrs = [attrs,superclass.constructor_keys].flatten
     end
     # Generate ivar assigner code lines
