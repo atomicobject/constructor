@@ -1,3 +1,7 @@
+== 1.0.2 / 2008-05-07
+
+  * An error is raised when constructor keys are passed in that already exist in the super class
+
 == 1.0.1 / 2007-12-21
 
 * You can now pass a block to your constructor call; it gets executed after all the ivars get assigned.  (This lets you write some initializer code if you need to.)
