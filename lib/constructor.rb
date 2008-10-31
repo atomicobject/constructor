@@ -10,6 +10,7 @@ class Class #:nodoc:#
     # Look for embedded options in the listing:
     opts = attrs.find { |a| a.kind_of?(Hash) and attrs.delete(a) } 
     do_acc = opts.nil? ? false : opts[:accessors] == true
+    do_reader = opts.nil? ? false : opts[:readers] == true
     require_args = opts.nil? ? true : opts[:strict] != false
     super_args = opts.nil? ? nil : opts[:super]
 
@@ -27,9 +28,16 @@ class Class #:nodoc:#
 
     # If accessors option is on, declare accessors for the attributes:
     if do_acc
-      self.class_eval "attr_accessor " + attrs.map {|x| ":#{x.to_s}"}.join(',')
+      add_accessors = "attr_accessor " + attrs.reject {|x| superclass.constructor_keys.include?(x.to_sym)}.map {|x| ":#{x.to_s}"}.join(',')
+      #add_accessors = "attr_accessor " + attrs.map {|x| ":#{x.to_s}"}.join(',')
+      self.class_eval add_accessors
     end
 
+    # If readers option is on, declare readers for the attributes:
+    if do_reader
+      self.class_eval "attr_reader " + attrs.reject {|x| superclass.constructor_keys.include?(x.to_sym)}.map {|x| ":#{x.to_s}"}.join(',')
+    end
+    
     # If user supplied super-constructor hints:
     super_call = ''
     if super_args

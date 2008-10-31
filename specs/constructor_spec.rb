@@ -46,6 +46,31 @@ describe "constructor's accessor option" do
   end
 end
 
+describe "constructor's reader option" do
+  it 'provides readers for constructor arguments when reader option is true' do
+    fuh = TestingAutoReaders.new( 
+      :foo => 'my foo',
+      :why => 'lucky'
+    )
+    fuh.foo.should eql('my foo')
+    fuh.why.should eql('lucky')
+    fuh.to_pretty_pretty.should eql('my foo lucky')
+
+    lambda {fuh.why = 'no way'}.should raise_error(NoMethodError)
+    lambda {fuh.foo = 'uh uh'}.should raise_error(NoMethodError)
+  end
+
+  it 'does not provide reader for constructor arguments when reader option is false' do
+    fuh = TestingBlockedReaders.new :foo => 'my foo', :why => 'my why'
+    lambda {fuh.foo}.should raise_error(NoMethodError)
+    lambda {fuh.bar}.should raise_error(NoMethodError)
+    fuh.to_pretty_pretty.should eql('my foo my why')
+
+    lambda {fuh.why = 'no way'}.should raise_error(NoMethodError)
+    lambda {fuh.foo = 'uh uh'}.should raise_error(NoMethodError)
+  end
+end
+
 describe 'using constructor with inheritance' do
   it 'allows for inheritance of constructor arguments using a non-constructor defined subclass' do
     fuh = SubclassOfTestingClass.new :foo => 'whu?'
@@ -121,6 +146,16 @@ describe 'using constructor with inheritance' do
     class1 = constructor_class(Object, :star, :wars)
     class2 = constructor_class(class1, :space, :balls)
     lambda { constructor_class(class2, :star, :space, :chewy) }.should raise_error("Base class already has keys [:space, :star]")
+  end
+  
+  it 'does not create accessors for superclass constructor arguments' do
+    tas = TestingAccessorSubclass.new(:far => 'thing')
+    tas.respond_to?(:cuteness).should be_false
+  end
+  
+  it 'does not create a reader for superclass constructor arguments' do
+    t1 = TestingReaderSubclass.new(:foo => 'thing')
+    t1.respond_to?(:foo).should be_false
   end
 end
 
@@ -291,6 +326,21 @@ class TestingAutoAccessors
   end
 end
 
+class TestingAutoReaders
+  constructor :foo, :why, :readers => true, :strict => false
+  def to_pretty_pretty
+    "#{@foo} #{@why}"
+  end
+end
+
+class TestingReaderSuperclass
+  constructor :foo
+end
+
+class TestingReaderSubclass < TestingReaderSuperclass
+  constructor :bar,  :readers => true, :strict => false
+end  
+
 class TestingSuperConstructorBase
   attr_reader :a, :b
   def initialize(a,b)
@@ -315,10 +365,21 @@ class TestingSuperConstructor2 < TestingSuperConstructorBase2
   constructor :some, :accessors => true, :super => [], :strict => false
 end
 
+class TestingAccessorSubclass < Baby
+  constructor :foo, :accessors => true, :strict => false
+end
+
 class TestingBlockedAccessors
   constructor :foo, :bar, :accessors => false
   def to_pretty_pretty
     "#{@foo} #{@bar}"
+  end
+end
+
+class TestingBlockedReaders
+  constructor :foo, :why, :readers => false
+  def to_pretty_pretty
+    "#{@foo} #{@why}"
   end
 end
 
@@ -327,7 +388,8 @@ class Papa
 end
 
 class Sonny < Papa
-  constructor :computer, :accessors => true
+  attr_accessor :car, :saw, :computer
+  constructor :computer
 end
 
 class Llamma
