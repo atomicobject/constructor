@@ -1,16 +1,12 @@
-constructor
+== Constructor
 
-* http://rubyforge.org/projects/atomicobjectrb/
 * http://atomicobjectrb.rubyforge.org/constructor
+* http://rubyforge.org/projects/atomicobjectrb/
 
 == DESCRIPTION:
   
 Declarative means to define object properties by passing a hash 
 to the constructor, which will set the corresponding ivars.
-
-== FEATURES/PROBLEMS:
-  
-* Declarative constructor definition and ivar initialization 
 
 == SYNOPSIS:
 
