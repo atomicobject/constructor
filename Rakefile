@@ -1,33 +1,33 @@
 require 'rubygems'
-require 'hoe'
-require './lib/constructor.rb'
-require 'spec/rake/spectask'
-
 
 desc 'Default: run specs'
 task :default => :spec
-Hoe.new('constructor', CONSTRUCTOR_VERSION) do |p|
-  p.rubyforge_name = 'atomicobjectrb'
-  p.author = 'Atomic Object'
-  p.email = 'dev@atomicobject.com'
-  p.summary = 'Declarative, named constructor arguments.'
-  p.description =  p.paragraphs_of('README.txt', 2).join("\n\n")
-  p.url = p.paragraphs_of('README.txt', 1).first.gsub(/\* /,'').split(/\n/)
-  p.changes = p.paragraphs_of('History.txt', 0..1).join("\n\n")
-end
 
+require 'spec/rake/spectask'
 desc 'Run constructor specs'
 Spec::Rake::SpecTask.new(:spec) do |t|
   t.spec_files = FileList['specs/*_spec.rb']
   t.spec_opts << '-c -f s'
 end
 
-if File.exists?("../tools/")
-  load "../tools/tasks/homepage.rake"
-  load "../tools/tasks/release_tagging.rake"
-  ReleaseTagging.new do |t|
-    t.package = "constructor"
-    t.version = CONSTRUCTOR_VERSION
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gemspec|
+    $: << "lib"
+    require 'constructor.rb'
+    gemspec.name = 'constructor'
+    gemspec.version = CONSTRUCTOR_VERSION
+    gemspec.summary = 'Declarative named-argument object initialization.'
+    gemspec.description = 'Declarative means to define object properties by passing a hash to the constructor, which will set the corresponding ivars.'
+    gemspec.homepage = 'http://atomicobject.github.com/constructor'
+    gemspec.authors = 'Atomic Object'
+    gemspec.email = 'github@atomicobject.com'
+    gemspec.test_files = FileList['specs/*_spec.rb']
   end
+
+  Jeweler::GemcutterTasks.new
+
+rescue LoadError
+  puts "(jeweler not installed)"
 end
 
