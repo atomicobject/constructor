@@ -1,7 +1,6 @@
 == Constructor
 
-* http://atomicobjectrb.rubyforge.org/constructor
-* http://rubyforge.org/projects/atomicobjectrb/
+* http://atomicobject.github.com/constructor
 
 == DESCRIPTION:
   
