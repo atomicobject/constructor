@@ -1,8 +1,0 @@
-History.txt
-Manifest.txt
-README.txt
-Rakefile
-lib/constructor.rb
-lib/constructor_struct.rb
-specs/constructor_spec.rb
-specs/constructor_struct_spec.rb

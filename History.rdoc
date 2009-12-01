@@ -1,3 +1,11 @@
+== 1.0.4 / 2009-12-01
+
+  * Building is now done with Jeweler.
+
+== 1.0.3 / 2009-11-30
+
+  * Quick release to include ConstructorStruct. 
+
 == 1.0.2 / 2008-05-07
 
   * An error is raised when constructor keys are passed in that already exist in the super class
