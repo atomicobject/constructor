@@ -1,3 +1,8 @@
+== 2.0 / 2010-12-27
+
+  * Now uses an included module with an initialize method instead of a class_eval-ed initialize to better handle inheritance and mixins, and to simplify the code.
+  * Removed Jeweler, replaced with Bundler
+  
 == 1.0.4 / 2009-12-01
 
   * Building is now done with Jeweler.

@@ -191,12 +191,12 @@ describe 'stict mode usage' do
     # Omit foo
     lambda {
       TestingStrictArgsDefault.new :bar => 'ok,yeah'
-    }.should raise_error(ConstructorArgumentError, /foo/)
+    }.should raise_error(Constructor::ArgumentError, /foo/)
     
     # Omit bar
     lambda {
       TestingStrictArgsDefault.new :foo => 'ok,yeah'
-    }.should raise_error(ConstructorArgumentError, /bar/)
+    }.should raise_error(Constructor::ArgumentError, /bar/)
   end
 
   it 'defaults to strict argument enforcement' do
@@ -208,16 +208,16 @@ describe 'stict mode usage' do
   end
 
   it 'does not allow empty constructor arguments when strict option is true' do
-    lambda {TestingStrictArgs.new {}}.should raise_error(ConstructorArgumentError,/foo,bar/)
-    lambda {TestingStrictArgs.new}.should raise_error(ConstructorArgumentError,/foo,bar/)
-    lambda {TestingStrictArgs.new nil}.should raise_error(ConstructorArgumentError,/foo,bar/)
+    lambda {TestingStrictArgs.new {}}.should raise_error(Constructor::ArgumentError,/foo,bar/)
+    lambda {TestingStrictArgs.new}.should raise_error(Constructor::ArgumentError,/foo,bar/)
+    lambda {TestingStrictArgs.new nil}.should raise_error(Constructor::ArgumentError,/foo,bar/)
   end
 
   it 'does not allow extraneous arguments when strict option is true' do
     [ /thing/, /other/ ].each do |rejected_arg|
       lambda {
         TestingStrictArgs.new(:foo => 1, :bar => 2, :other => 3, :thing => 4)
-      }.should raise_error(ConstructorArgumentError, rejected_arg)
+      }.should raise_error(Constructor::ArgumentError, rejected_arg)
     end
   end
 
@@ -229,16 +229,16 @@ describe 'stict mode usage' do
     t2.bar.should eql(2)
 
     # See that strictness still applies
-    lambda {TestingStrictArgs2.new :no => 'good'}.should raise_error(ConstructorArgumentError)
+    lambda {TestingStrictArgs2.new :no => 'good'}.should raise_error(Constructor::ArgumentError)
   end
 end
 
-describe 'catching ConstructorArgumentError' do
+describe 'catching Constructor::ArgumentError' do
   it 'allows for generic rescuing of constructor argument errors' do
     begin
       TestingStrictArgs.new :broken => 'yoobetcha'
     rescue => bad_news
-      bad_news.should be_kind_of(ConstructorArgumentError)
+      bad_news.should be_kind_of(Constructor::ArgumentError)
     end
   end
 end
