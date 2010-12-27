@@ -1,8 +1,12 @@
 require 'rubygems'
 require 'bundler/setup'
 Bundler::GemHelper.install_tasks
-require 'rake/rdoctask'
-require 'spec/rake/spectask'
+begin
+  require 'rake/rdoctask'
+  require 'spec/rake/spectask'
+rescue
+  puts "You need to: bundle install"
+end
 
 desc 'Default: run specs'
 task :default => :spec
