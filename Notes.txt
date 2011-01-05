@@ -7,7 +7,6 @@ crosby
 4. Screen shot, save as sample_code.png
 5. rake (rewrites index.html)
 6. cd ..
-7. rake publish_docs
 
 page_header.graffle
   Export-as-HTML-Imagemap
