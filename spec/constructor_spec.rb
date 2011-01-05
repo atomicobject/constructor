@@ -93,6 +93,16 @@ describe 'using constructor with inheritance' do
     fuh.qux.should be_nil
     fuh.why.should be_nil
   end
+  
+  it 'works with a subclass of a class that does not use constructor but that has an ancestor that does' do
+    fuh = SubclassOfTestingClass4.new :foo => 100, :name => 'Frank'
+    fuh.my_new_var.should eql('something')
+    fuh.foo.should eql(100)
+    fuh.name.should eql('Frank')
+    fuh.bar.should be_nil
+    fuh.qux.should be_nil
+    fuh.why.should be_nil
+  end
 
   it 'passes named constructor args to superclass when subclass calls super' do
     fuh = SubclassOfTestingClass3.new :foo => 12
@@ -156,6 +166,14 @@ describe 'using constructor with inheritance' do
   it 'does not create a reader for superclass constructor arguments' do
     t1 = TestingReaderSubclass.new(:foo => 'thing')
     t1.respond_to?(:foo).should be_false
+  end
+  
+  it 'works with included modules that have initialize methods and constructor usage' do
+    obj = ModuleTestingClass.new :foo => "The Foo", :profession => "developer"
+    obj.foo.should eql("The Foo")
+    obj.profession.should eql("developer")
+    obj.height.should eql("tall")
+    obj.weight.should eql("big")
   end
 end
 
@@ -319,6 +337,10 @@ class SubclassOfTestingClass3 < TestingClass
   end
 end
 
+class SubclassOfTestingClass4 < SubclassOfTestingClass3
+  constructor :name, :accessors => true, :strict => false
+end
+
 class TestingAutoAccessors
   constructor :foo, :bar, :why, :qux, :accessors => true, :strict => false
   def to_pretty_pretty
@@ -404,4 +426,31 @@ class TestingBlockYield
   constructor :a, :accessors => true do
     @a = true
   end
+end
+
+module ModuleWithInitialize1
+  attr_reader :height
+  def initialize(*args)
+    super
+    @height = "tall"
+  end
+end
+
+module ModuleWithInitialize2
+  attr_reader :weight
+  def initialize(*)
+    super
+    @weight = "big"
+  end
+end
+
+class ModuleTestingBaseClass
+  constructor :profession, :readers => true, :super => []
+  include ModuleWithInitialize1
+  
+end
+
+class ModuleTestingClass < ModuleTestingBaseClass
+  include ModuleWithInitialize2
+  constructor :foo, :readers => true, :super => []
 end
