@@ -2,12 +2,12 @@
 
 * http://atomicobject.github.com/constructor
 
-== DESCRIPTION:
+== Description
   
 Declarative means to define object properties by passing a hash 
 to the constructor, which will set the corresponding ivars.
 
-== SYNOPSIS:
+== Synopsis
 
   require 'constructor'
 
@@ -38,19 +38,19 @@ fewer arguments than declared.
 to the Donkey constructor.
 
 
-== REQUIREMENTS:
+== Requirements
 
 * rubygems
 
-== INSTALL:
+== Install
 
-* sudo gem install constructor
+* gem install constructor
 
-== LICENSE:
+== License
 
 (The MIT License)
 
-Copyright (c) 2007-2010 Atomic Object
+Copyright (c) 2007-2011 Atomic Object
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
