@@ -46,6 +46,13 @@ to the Donkey constructor.
 
 * gem install constructor
 
+== Authors
+
+* David Crosby (crosby@atomicobject.com)
+* Patrick Bacon (bacon@atomicobject.com)
+* © 2007-2011 {Atomic Object}[http://www.atomicobject.com]
+* More Atomic Object {open source}[http://www.atomicobject.com/pages/Software+Commons] projects
+
 == License
 
 (The MIT License)
