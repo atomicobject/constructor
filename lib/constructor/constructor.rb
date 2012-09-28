@@ -7,7 +7,7 @@ module Constructor #:nodoc:#
     if config[:require_args]
       # First, make sure we've got args of some kind
       unless args and args.keys and args.keys.size > 0 
-        raise ArgumentError.new(keys)
+        raise ConstructorArgumentError.new(keys)
       end
       # Scan for missing keys in the argument hash
       a_keys = args.keys
@@ -19,7 +19,7 @@ module Constructor #:nodoc:#
         a_keys.delete(ck) # Delete inbound keys as we address them
       end
       if missing.size > 0 || a_keys.size > 0
-        raise ArgumentError.new(missing,a_keys)
+        raise ConstructorArgumentError.new(missing,a_keys)
       end
     end
     
@@ -37,7 +37,7 @@ module Constructor #:nodoc:#
   end
   
   # Fancy validation exception, based on missing and extraneous keys.
-  class ArgumentError < RuntimeError #:nodoc:#
+  class ConstructorArgumentError < RuntimeError #:nodoc:#
     def initialize(missing,rejected=[])
       err_msg = ''
       if missing.size > 0
@@ -45,10 +45,8 @@ module Constructor #:nodoc:#
       end
       if rejected.size > 0
         # Some inbound keys were not addressed earlier; this means they're unwanted
-        if err_msg
+        unless err_msg.empty?
           err_msg << "; " # Appending to earlier message about missing items
-        else
-          err_msg = ''
         end
         # Enumerate the rejected key names
         err_msg << "Rejected constructor args [#{rejected.join(',')}]"

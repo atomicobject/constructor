@@ -2,7 +2,7 @@ require 'rubygems'
 require 'bundler/setup'
 Bundler::GemHelper.install_tasks
 begin
-  require 'rake/rdoctask'
+  require 'rdoc/task'
   require 'spec/rake/spectask'
 rescue
   puts "You need to: bundle install"
@@ -17,7 +17,7 @@ Spec::Rake::SpecTask.new(:spec) do |t|
 end
 
 desc 'Generate documentation'
-Rake::RDocTask.new(:rdoc) do |rdoc|
+RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'doc'
   rdoc.title    = 'constructor'
   rdoc.options << '--line-numbers' << '--inline-source'

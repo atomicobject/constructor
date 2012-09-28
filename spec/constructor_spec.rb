@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../lib/constructor') 
+require File.expand_path('../lib/constructor', File.dirname(__FILE__))
 
 describe 'standard constructor usage' do
   it 'allows for object construction using a hash of named arguments' do
@@ -209,12 +209,12 @@ describe 'stict mode usage' do
     # Omit foo
     lambda {
       TestingStrictArgsDefault.new :bar => 'ok,yeah'
-    }.should raise_error(Constructor::ArgumentError, /foo/)
+    }.should raise_error(Constructor::ConstructorArgumentError, /foo/)
     
     # Omit bar
     lambda {
       TestingStrictArgsDefault.new :foo => 'ok,yeah'
-    }.should raise_error(Constructor::ArgumentError, /bar/)
+    }.should raise_error(Constructor::ConstructorArgumentError, /bar/)
   end
 
   it 'defaults to strict argument enforcement' do
@@ -226,16 +226,16 @@ describe 'stict mode usage' do
   end
 
   it 'does not allow empty constructor arguments when strict option is true' do
-    lambda {TestingStrictArgs.new {}}.should raise_error(Constructor::ArgumentError,/foo,bar/)
-    lambda {TestingStrictArgs.new}.should raise_error(Constructor::ArgumentError,/foo,bar/)
-    lambda {TestingStrictArgs.new nil}.should raise_error(Constructor::ArgumentError,/foo,bar/)
+    lambda {TestingStrictArgs.new {}}.should raise_error(Constructor::ConstructorArgumentError,/foo,bar/)
+    lambda {TestingStrictArgs.new}.should raise_error(Constructor::ConstructorArgumentError,/foo,bar/)
+    lambda {TestingStrictArgs.new nil}.should raise_error(Constructor::ConstructorArgumentError,/foo,bar/)
   end
 
   it 'does not allow extraneous arguments when strict option is true' do
     [ /thing/, /other/ ].each do |rejected_arg|
       lambda {
         TestingStrictArgs.new(:foo => 1, :bar => 2, :other => 3, :thing => 4)
-      }.should raise_error(Constructor::ArgumentError, rejected_arg)
+      }.should raise_error(Constructor::ConstructorArgumentError, rejected_arg)
     end
   end
 
@@ -247,16 +247,16 @@ describe 'stict mode usage' do
     t2.bar.should eql(2)
 
     # See that strictness still applies
-    lambda {TestingStrictArgs2.new :no => 'good'}.should raise_error(Constructor::ArgumentError)
+    lambda {TestingStrictArgs2.new :no => 'good'}.should raise_error(Constructor::ConstructorArgumentError)
   end
 end
 
-describe 'catching Constructor::ArgumentError' do
+describe 'catching Constructor::ConstructorArgumentError' do
   it 'allows for generic rescuing of constructor argument errors' do
     begin
       TestingStrictArgs.new :broken => 'yoobetcha'
     rescue => bad_news
-      bad_news.should be_kind_of(Constructor::ArgumentError)
+      bad_news.should be_kind_of(Constructor::ConstructorArgumentError)
     end
   end
 end
