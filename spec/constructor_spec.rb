@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/../lib/constructor') 
+require File.expand_path('../lib/constructor', File.dirname(__FILE__))
 
 describe 'standard constructor usage' do
   it 'allows for object construction using a hash of named arguments' do

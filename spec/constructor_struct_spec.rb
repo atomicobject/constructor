@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../lib/constructor_struct'
+require File.expand_path('../lib/constructor_struct', File.dirname(__FILE__))
 
 describe ConstructorStruct, "#new" do
   def struct(*accessors)
