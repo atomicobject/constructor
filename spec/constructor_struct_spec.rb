@@ -1,34 +1,27 @@
-require File.dirname(__FILE__) + '/../lib/constructor_struct'
+PROJ_DIR=File.expand_path(File.dirname(__FILE__) + "/../")
+$: << PROJ_DIR + "/lib"
+require 'constructor_struct'
 
 describe ConstructorStruct, "#new" do
-  def struct(*accessors)
-    ConstructorStruct.new(*accessors)
-  end
-  
-  def instance_of(clazz, args=nil)
-    args = [args] || []
-    clazz.new(*args)
-  end
-  
   before do
-    AClass = struct(:hello, :world) unless defined?(AClass)
+    AClass = ConstructorStruct.new(:hello, :world) unless defined?(AClass)
   end
   
   it "creates a new class with accessors given a set of symbols or strings" do
-    instance_of(AClass, {:hello => "foo", :world => "bar"}).hello.should == "foo"
-    instance_of(AClass, {:hello => "foo", :world => "bar"}).world.should == "bar"
+    AClass.new(:hello => "foo", :world => "bar").hello.should == "foo"
+    AClass.new(:hello => "foo", :world => "bar").world.should == "bar"
   end
   
   it "creates a real class" do
-    instance_of(AClass).class.should == AClass
+    AClass.new.class.should == AClass
   end
   
   it "has the option of creating a strict accessors" do
-    lambda { instance_of(struct(:foo, :strict => true)) }.should raise_error
+    lambda { ConstructorStruct.new(:foo, :strict => true).new }.should raise_error(/missing.*args.*foo/i)
   end
   
   it "does not have the option of not creating accessors" do
-    instance_of(struct(:foo, :accessors => false), :foo => "bar").foo.should == "bar"
+    ConstructorStruct.new(:foo, :accessors => false).new(:foo => "bar").foo.should == "bar"
   end
 
   describe "equivalence" do
